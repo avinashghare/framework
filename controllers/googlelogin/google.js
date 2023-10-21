@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const __constants = require('../../config/constants')
 const validationOfAPI = require('../../middlewares/validation')
-const passport = require('../../config/passport');
+const passport = require('../../config/passport')
 // const cache = require('../../middlewares/requestCacheMiddleware') // uncomment the statement whenever the redis cache is in use.
 
 /**
@@ -24,7 +24,7 @@ const passport = require('../../config/passport');
 const validationSchema = {
 }
 const validation = (req, res, next) => {
-  console.log("validation")
+  console.log('validation')
   return validationOfAPI(req, res, next, validationSchema, 'query')
 }
 const ping = async (req, res) => {
@@ -38,22 +38,22 @@ router.get('/getPing', validation, ping)
 
 // http://localhost:3005/api/googlelogin/google
 // Route to start the Google OAuth authentication process
-router.get('/google', validation, passport.authenticate('google', { scope: ['profile', 'email'] }),(req)=>{
-  console.log("req.user",req.user)
-});
+router.get('/google', validation, passport.authenticate('google', { scope: ['profile', 'email'] }), (req) => {
+  console.log('req.user', req.user)
+})
 
 // Callback route after Google authentication
 router.get('/callback', validation, passport.authenticate('google', { failureRedirect: '/google' }), (req, res) => {
   // Successful authentication, redirect or respond as needed
-  console.log("req.user",req.user)
-  console.log("res",res.user)
-  console.log("inside /callback")
-  res.render('pages/success',req.user);
+  console.log('req.user', req.user)
+  console.log('res', res.user)
+  console.log('inside /callback')
+  res.render('pages/success', req.user)
   // console.log("req",req)
   // console.log("req.body",req.body)
   // console.log("res",res)
   // res.redirect('/profile');
-});
+})
 
 // router.get('/callback', validation, passport.authenticate('google', { failureRedirect: '/google' }), (req, res) => {
 //   console.log("req.user",req.user)
