@@ -11,6 +11,8 @@ const helmet = require('helmet')
 const authMiddleware = require('./middlewares/auth/authentication')
 const numCPUs = __config.clusterNumber || 0
 const fs = require('fs')
+const session = require('express-session');
+const passport = require('./config/passport');
 
 class httpApiWorker {
   constructor () {
@@ -44,7 +46,26 @@ class httpApiWorker {
       action: 'deny'
     }))
     vm.app.set('views', path.join(process.env.PWD, 'views'))
-    vm.app.set('view engine', 'hbs')
+    // vm.app.set('view engine', 'hbs')
+    vm.app.set('view engine', 'ejs');
+    // vm.app.use(session({
+    //   resave: false,
+    //   saveUninitialized: true,
+    //   secret: 'SECRET' 
+    // }));
+    // Session middleware
+    vm.app.use(
+      session({
+        secret: 'your_secret_key',
+        resave: false,
+        saveUninitialized: true,
+      })
+    );
+
+    // Initialize Passport and session middleware
+    vm.app.use(passport.initialize());
+    vm.app.use(passport.session());
+
     vm.app.use((req, res, next) => {
       if (!req.timedout) {
         next()
@@ -112,6 +133,7 @@ class httpApiWorker {
     }
     const apiPrefix = __config.addBaseUrlPrefix === true ? '/' + __config.api_prefix : ''
     console.log('Application listening on Port :', __config.port, '\nApplication Test URL : ', __config.base_url + apiPrefix + '/api/healthCheck/getping')
+    console.log('Application listening on Port :', __config.port, '\nApplication Test URL : ', __config.base_url + apiPrefix + '/api/googlelogin/google')
 
     const stopGraceFully = () => {
       vm.app.server.close(async (error) => {
