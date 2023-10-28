@@ -3,7 +3,7 @@ class Health {
   async health () { return true } // some async functionality
   async checkHealth () {
     try {
-      console.log("socketService",socketService)
+      console.log('socketService', socketService)
       const response = await this.health() // async function called
       return response
     } catch (err) {
