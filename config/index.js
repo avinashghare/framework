@@ -41,5 +41,8 @@ module.exports = {
   },
   addBaseUrlPrefix: process.env.ADD_BASEURL_PREFIX === 'true',
   debugMode: process.env.DEBUG_MODE === 'true',
-  userBasedCache: process.env.USER_BASED_CACHE === 'true'
+  userBasedCache: process.env.USER_BASED_CACHE === 'true',
+  socket: {
+    socketUrl: process.env.SOCKET_URL
+  }
 }
